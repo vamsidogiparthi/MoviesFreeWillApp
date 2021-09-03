@@ -5,6 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="SQL Schema Files\**" />
+    <Content Remove="SQL Schema Files\**" />
+    <EmbeddedResource Remove="SQL Schema Files\**" />
+    <None Remove="SQL Schema Files\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="Controllers\AddOrUpdateUserMovieRatingController.cs" />
     <Compile Remove="Controllers\WeatherForecastController.cs" />
   </ItemGroup>
