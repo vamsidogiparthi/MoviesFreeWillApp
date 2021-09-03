@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using MoviesWebAPI.Common.Mappings;
+using MoviesWebAPI.Logic.Mappings;
 using MoviesWebAPI.Data.Common.Dtos;
 using System;
 using System.Linq;

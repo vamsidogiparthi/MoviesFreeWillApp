@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 
-namespace MoviesWebAPI.Common.Mappings
+namespace MoviesWebAPI.Logic.Mappings
 {
     public interface IMapFrom<T>
     {

@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MoviesWebAPI.Data.Datalayer.EntityContext;
-using System;
+using System.Reflection;
 
 namespace MoviesWebAPI.Data
 {
@@ -10,7 +10,7 @@ namespace MoviesWebAPI.Data
     {
         public static IServiceCollection AddDataAndRepository(this IServiceCollection services, IConfiguration configuration)
         {
-
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddDbContext<MoviesAppContext>(config =>
             {
                 config.UseSqlServer(configuration.GetConnectionString("MoviesAppConn"));

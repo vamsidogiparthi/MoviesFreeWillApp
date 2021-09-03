@@ -27,18 +27,19 @@ namespace MoviesWebAPI.Data.Repository.Persistance
         {
             var query = _context.Users.AsQueryable();
 
-            return await GetUserDtos(query);
+            return await Task.Run(() =>
+            {
+                return query.ProjectTo<UserDto>(_mapper.ConfigurationProvider).ToList();
+            });
         }
 
         public async Task<UserDto> GetUsersByIdAsync(int id)
         {
             return await Task.Run(() =>
             {
-                var user = _context.Users.Select(user => new UserDto
-                {
-                    Id = user.Id,
-                    Name = user.FirstName + " " + user.LastName
-                }).FirstOrDefault(x => x.Id == id);
+                UserDto user = new UserDto();
+                var query = _context.Users.FirstOrDefault(x => x.Id == id);
+                _mapper.Map(query, user);
 
                 return user;
             });

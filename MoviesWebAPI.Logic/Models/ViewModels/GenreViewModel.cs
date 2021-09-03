@@ -1,4 +1,4 @@
-﻿using MoviesWebAPI.Common.Mappings;
+﻿using MoviesWebAPI.Logic.Mappings;
 using MoviesWebAPI.Data.Common.Dtos;
 
 namespace MoviesWebAPI.Logic.Models.ViewModels

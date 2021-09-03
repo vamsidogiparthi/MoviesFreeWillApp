@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using MoviesWebAPI.Data.Common.Dtos;
 using MoviesWebAPI.Data.Datalayer.EntityContext;
 using MoviesWebAPI.Data.Datalayer.Models;
@@ -25,7 +26,6 @@ namespace MoviesWebAPI.Data.Repository.Persistance
         public async Task<IEnumerable<MovieDto>> GetAllMoviesAsync()
         {
             var query = _context.Movies.AsQueryable();
-
             return await GetMovieDtos(query);
         }
 

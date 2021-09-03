@@ -3,7 +3,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 
-namespace MoviesWebAPI.Common.Mappings
+namespace MoviesWebAPI.Data.Common.Mappings
 {
     public class MappingProfile : Profile
     {

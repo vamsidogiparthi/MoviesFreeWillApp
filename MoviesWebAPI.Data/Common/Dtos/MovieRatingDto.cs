@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using MoviesWebAPI.Common.Mappings;
+using MoviesWebAPI.Data.Common.Mappings;
 using MoviesWebAPI.Data.Datalayer.Models;
 
 
