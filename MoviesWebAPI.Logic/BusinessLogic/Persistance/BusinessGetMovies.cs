@@ -47,12 +47,13 @@ namespace MoviesWebAPI.Logic.Business.Persistance
                 {
                     var query = await userMoviesRepositoryEF.getMoviesRepository.GetAllMoviesAsync();
                     if (!string.IsNullOrEmpty(filter.Title))
-                        query = query.Where(x => x.Title.Contains(filter.Title));
+                        query = query.Where(x => x.Title.ToUpper().Contains(filter.Title.ToUpper()));
                     if (filter.YearOfRelease.HasValue)
                         query = query.Where(x => x.YearOfRelease == filter.YearOfRelease);
-                    if (filter.Genres != null && filter.Genres.Length > 0)
+                    if (filter.Genres != null && filter.Genres.Count() > 0)
                     {
-                        query = query.Where(x => x.Genres.Select(x => x.Name).ToList().Any(t1 => filter.Genres.ToList().Contains(t1)));
+                        filter.Genres = filter.Genres.ConvertAll(x => x.ToUpper());                       
+                        query = query.Where(x => x.Genres.Any(t1 => filter.Genres.Contains(t1.Name.ToUpper())));
                     }
                     if (query.Count() == 0)
                         throw new NotFoundException("No Movies");
@@ -126,13 +127,14 @@ namespace MoviesWebAPI.Logic.Business.Persistance
         {
             bool valid = false;
 
-            if (string.IsNullOrEmpty(filter.Title) && !filter.YearOfRelease.HasValue && (filter.Genres == null || filter.Genres.Length == 0))
+            if (string.IsNullOrEmpty(filter.Title) && !filter.YearOfRelease.HasValue && (filter.Genres == null || filter.Genres.Count() == 0))
             {
                 throw new ValidationException(new List<FluentValidation.Results.ValidationFailure>()
                 {
                     new FluentValidation.Results.ValidationFailure("InvalidFilter", "The filter should have one or more filters"),
                 });
-            }    
+            }
+            valid = true;
 
             return await Task.Run(() => { return valid; }); ;
         }

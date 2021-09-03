@@ -101,6 +101,7 @@ namespace MoviesWebAPI.Data.Repository.Persistance
                             Id = movie.Id,
                             Title = movie.Title,
                             RunningTime = movie.RunningTime,
+                            YearOfRelease = movie.YearOfRelease,
                             Genres = movie.MovieGenres.Select(c => new GenreDto
                             {
                                 Id = c.Id,
