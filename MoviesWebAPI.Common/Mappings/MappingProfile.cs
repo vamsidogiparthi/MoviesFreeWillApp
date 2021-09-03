@@ -3,7 +3,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 
-namespace JGHHubInstructor.Common.Mappings
+namespace MoviesWebAPI.Common.Mappings
 {
     public class MappingProfile : Profile
     {

@@ -1,16 +1,13 @@
 ﻿using MoviesWebAPI.Common.Filter.MovieSearchFilters;
-using MoviesWebAPI.Data.Common.Dtos;
-using MoviesWebAPI.Data.Datalayer.Models;
 using MoviesWebAPI.Logic.Models.ViewModels;
-using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace MoviesWebAPI.Logic.Business.Interfaces
 {
     public interface IBusinessGetMovies
     {
+        // Method to get all the movies async without parameters
         Task<List<MovieViewModel>> GetAllMoviesAsync();
         Task<List<MovieViewModel>> GetMoviesByFilter(MovieSearchFilter movieSearchFilter);
         Task<MovieViewModel> GetMovieByIdAsync(int id);

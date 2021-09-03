@@ -1,18 +1,14 @@
 ﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using MoviesWebAPI.Common.Exceptions;
 using MoviesWebAPI.Common.Filter.MovieSearchFilters;
 using MoviesWebAPI.Data.Common.Dtos;
 using MoviesWebAPI.Data.Datalayer.EntityContext;
-using MoviesWebAPI.Data.Datalayer.Models;
 using MoviesWebAPI.Data.Repository;
-using MoviesWebAPI.Data.Repository.Interfaces;
 using MoviesWebAPI.Logic.Business.Interfaces;
 using MoviesWebAPI.Logic.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace MoviesWebAPI.Logic.Business.Persistance
@@ -27,14 +23,14 @@ namespace MoviesWebAPI.Logic.Business.Persistance
         {
             _context = context;
             _mapper = mapper;
-            userMoviesRepositoryEF = new UserMoviesRepositoryEF(context, mapper);
+            userMoviesRepositoryEF = new UserMoviesRepositoryEF(_context, _mapper);
         }
 
         public async Task<List<MovieViewModel>> GetAllMoviesAsync()
         {
             var query = await userMoviesRepositoryEF.getMoviesRepository.GetAllMoviesAsync();
             var result = await GetMovieViewModel(query);
-            return result.OrderByDescending(x => x.AverageRating).ThenBy(x=>x.Title).ToList();
+            return result.OrderByDescending(x => x.AverageRating).ThenBy(x => x.Title).ToList();
         }
 
         public async Task<List<MovieViewModel>> GetMoviesByFilter(MovieSearchFilter filter)
@@ -52,7 +48,7 @@ namespace MoviesWebAPI.Logic.Business.Persistance
                         query = query.Where(x => x.YearOfRelease == filter.YearOfRelease);
                     if (filter.Genres != null && filter.Genres.Count() > 0)
                     {
-                        filter.Genres = filter.Genres.ConvertAll(x => x.ToUpper());                       
+                        filter.Genres = filter.Genres.ConvertAll(x => x.ToUpper());
                         query = query.Where(x => x.Genres.Any(t1 => filter.Genres.Contains(t1.Name.ToUpper())));
                     }
                     if (query.Count() == 0)
@@ -91,13 +87,13 @@ namespace MoviesWebAPI.Logic.Business.Persistance
         }
 
         public async Task<MovieViewModel> GetMovieByIdAsync(int id)
-        {            
+        {
             var movieDto = await userMoviesRepositoryEF.getMoviesRepository.GetMovieByIdAsync(id);
             MovieViewModel movieViewModel = new MovieViewModel();
-            if(movieDto !=null)
+            if (movieDto != null)
             {
                 _mapper.Map(movieDto, movieViewModel);
-            }           
+            }
             return movieViewModel;
         }
 
@@ -106,22 +102,9 @@ namespace MoviesWebAPI.Logic.Business.Persistance
             var query = await userMoviesRepositoryEF.getMoviesRepository.GetMoviesByUserAsync(userId);
             if (query.Count() == 0)
                 throw new NotFoundException();
-            //query = query.Where(x => x.MovieRatings.Select(r => r.User.Id).ToList().Contains(userId));
             var result = await GetMovieViewModel(query, userId);
-            return result.OrderByDescending(x=>x.AverageRating).ThenBy(x=>x.Title).Skip((5) * 0).Take(5).ToList();
+            return result.OrderByDescending(x => x.AverageRating).ThenBy(x => x.Title).Skip((5) * 0).Take(5).ToList();
         }
-
-
-        //public async Task<MovieRatingViewModel> GetMovieUserRatingByMovieAndUserIdAsync(int userId, int movieId)
-        //{
-        //    MovieRatingViewModel movieRatingViewModel = new MovieRatingViewModel();
-
-        //    var query = await userMoviesRepositoryEF.getMoviesRepository.GetMovieUserRatingByMovieAndUserIdAsync(userId, movieId);
-        //    _mapper.Map(query, movieRatingViewModel);
-
-        //    return movieRatingViewModel;
-        //}
-
 
         private async Task<bool> ValidateMovieSearchFilter(MovieSearchFilter filter)
         {
@@ -157,7 +140,7 @@ namespace MoviesWebAPI.Logic.Business.Persistance
                             Id = movie.Id,
                             Title = movie.Title,
                             RunningTime = movie.RunningTime > 0 ? (movie.RunningTime / 60) : 0,
-                            AverageRating = userId == 0 ? CalculateAverage(movie.MovieRatings): CalculateAverage(movie.MovieRatings.Where(x => x.User.Id == userId).ToList()),
+                            AverageRating = userId == 0 ? CalculateAverage(movie.MovieRatings) : CalculateAverage(movie.MovieRatings.Where(x => x.User.Id == userId).ToList()),
                             Genres = movie.Genres != null && movie.Genres.Count() > 0 ? string.Join(",", movie.Genres.Select(x => x.Name).ToArray()) : null,
                             YearOfRelease = movie.YearOfRelease
                         }).ToList();

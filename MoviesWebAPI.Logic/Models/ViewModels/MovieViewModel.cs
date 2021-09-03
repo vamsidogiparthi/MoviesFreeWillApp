@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using JGHHubInstructor.Common.Mappings;
+using MoviesWebAPI.Common.Mappings;
 using MoviesWebAPI.Data.Common.Dtos;
 using System;
 using System.Linq;

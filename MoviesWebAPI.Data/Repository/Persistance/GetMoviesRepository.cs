@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using MoviesWebAPI.Data.Common.Dtos;
 using MoviesWebAPI.Data.Datalayer.EntityContext;
 using MoviesWebAPI.Data.Datalayer.Models;

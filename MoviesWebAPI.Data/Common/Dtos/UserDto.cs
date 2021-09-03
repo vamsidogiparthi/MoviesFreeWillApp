@@ -1,11 +1,7 @@
 ﻿using AutoMapper;
-using JGHHubInstructor.Common.Mappings;
+using MoviesWebAPI.Common.Mappings;
 using MoviesWebAPI.Data.Datalayer.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace MoviesWebAPI.Data.Common.Dtos
 {

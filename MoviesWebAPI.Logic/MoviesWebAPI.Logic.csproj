@@ -5,10 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Common\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\MoviesWebAPI.Common\MoviesWebAPI.Common.csproj" />
     <ProjectReference Include="..\MoviesWebAPI.Data\MoviesWebAPI.Data.csproj" />
   </ItemGroup>

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 
-namespace JGHHubInstructor.Common.Mappings
+namespace MoviesWebAPI.Common.Mappings
 {
     public interface IMapFrom<T>
     {

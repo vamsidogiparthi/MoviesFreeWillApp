@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using JGHHubInstructor.Common.Mappings;
+using MoviesWebAPI.Common.Mappings;
 using MoviesWebAPI.Data.Datalayer.Models;
 using System;
 using System.Collections.Generic;

@@ -18,7 +18,7 @@ namespace MoviesWebAPI.Data.Repository
         {
             _moviesAppContext = moviesAppContext;
             _mapper = mapper;
-            _addOrUpdateUserMovieRating = new AddOrUpdateUserMovieRatingRepository(moviesAppContext , _mapper);
+            _addOrUpdateUserMovieRating = new AddOrUpdateUserMovieRatingRepository(_moviesAppContext, _mapper);
             _getUsersRepository = new GetUsersRepository(_moviesAppContext, _mapper);
             getMoviesRepository = new GetMoviesRepository(_moviesAppContext, _mapper);
         }

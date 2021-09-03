@@ -1,10 +1,9 @@
 ﻿using AutoMapper;
-using JGHHubInstructor.Common.Mappings;
 using MoviesWebAPI.Data.Common.Dtos;
 
 namespace MoviesWebAPI.Logic.Models.ViewModels
 {
-    public class UserViewModel : IMapFrom<UserDto>
+    public class UserViewModel : Common.Mappings.IMapFrom<UserDto>
     {
         public int Id { get; set; }
         public string Name { get; set; }

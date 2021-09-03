@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using JGHHubInstructor.Common.Mappings;
+﻿using MoviesWebAPI.Common.Mappings;
 using MoviesWebAPI.Data.Common.Dtos;
 
 namespace MoviesWebAPI.Logic.Models.ViewModels

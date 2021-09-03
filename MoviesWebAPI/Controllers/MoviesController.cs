@@ -7,19 +7,17 @@ using System.Threading.Tasks;
 
 namespace MoviesWebAPI.Controllers
 {
-    [Route("api/Movies")]
+    [Route("api/movies")]
     [ApiController]
-    public class MovieController : ControllerBase
+    public class MoviesController : ControllerBase
     {
 
         private readonly IBusinessAddOrUpdateUserMovieRating _businessAddOrUpdateUserMovieRating;
         private readonly IBusinessGetMovies _businessGetMovies;
-        private readonly IBusinessGetUsers _businessGetUsers;
-        public MovieController(IBusinessAddOrUpdateUserMovieRating businessAddOrUpdateUserMovieRating, IBusinessGetMovies businessGetMovies, IBusinessGetUsers businessGetUsers)
+        public MoviesController(IBusinessAddOrUpdateUserMovieRating businessAddOrUpdateUserMovieRating, IBusinessGetMovies businessGetMovies)
         {
             _businessAddOrUpdateUserMovieRating = businessAddOrUpdateUserMovieRating;
             _businessGetMovies = businessGetMovies;
-            _businessGetUsers = businessGetUsers;
         }
 
 
@@ -27,6 +25,7 @@ namespace MoviesWebAPI.Controllers
         [Route("getallmovies")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetAllMovies()
         {
             var result = await _businessGetMovies.GetAllMoviesAsync();
@@ -40,6 +39,7 @@ namespace MoviesWebAPI.Controllers
         [Route("getmoviebypaging")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetMovieByPaging([FromQuery] int pageNumber = 0, [FromQuery] int pageSize = 5)
         {
             var result = await _businessGetMovies.GetMovieByPagingAsync(pageNumber, pageSize);
@@ -74,8 +74,6 @@ namespace MoviesWebAPI.Controllers
                 return Ok(result);
             return BadRequest();
         }
-
-
 
         [HttpPost]
         [Route("addorupdate")]

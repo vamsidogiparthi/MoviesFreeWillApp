@@ -21,7 +21,7 @@ namespace MoviesWebAPI.Logic.Business.Persistance
         {
             _context = context;
             _mapper = mapper;
-            userMoviesRepositoryEF = new UserMoviesRepositoryEF(context, mapper);
+            userMoviesRepositoryEF = new UserMoviesRepositoryEF(_context, _mapper);
         }
 
         public async Task<List<UserViewModel>> GetAllUsersAsync()

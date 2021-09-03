@@ -3,13 +3,10 @@ using MoviesWebAPI.Common.Exceptions;
 using MoviesWebAPI.Data.Common.Dtos;
 using MoviesWebAPI.Data.Datalayer.EntityContext;
 using MoviesWebAPI.Data.Repository;
-using MoviesWebAPI.Data.Repository.Interfaces;
 using MoviesWebAPI.Logic.Business.Interfaces;
 using MoviesWebAPI.Logic.Models.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace MoviesWebAPI.Logic.Business.Persistance
@@ -24,7 +21,7 @@ namespace MoviesWebAPI.Logic.Business.Persistance
         {
             _context = context;
             _Imapper = mapper;
-            userMoviesRepositoryEF = new UserMoviesRepositoryEF(context, mapper);
+            userMoviesRepositoryEF = new UserMoviesRepositoryEF(_context, _Imapper);
         }
 
         public async Task<bool> AddOrUpdateMovieRating(MovieRatingViewModel movieRating)
