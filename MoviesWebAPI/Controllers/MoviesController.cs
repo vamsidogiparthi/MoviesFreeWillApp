@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MoviesWebAPI.Common.Filter.MovieSearchFilters;
 using MoviesWebAPI.Logic.Business.Interfaces;
 using MoviesWebAPI.Logic.Models.ViewModels;
 using System.Threading.Tasks;
@@ -56,6 +57,19 @@ namespace MoviesWebAPI.Controllers
         public async Task<IActionResult> GetMoviesByUser([FromRoute] int userId)
         {
             var result = await _businessGetMovies.GetMoviesByUserAsync(userId);
+            if (result != null)
+                return Ok(result);
+            return BadRequest();
+        }
+
+        [HttpGet]
+        [Route("getmoviesbyfilters")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetMoviesByfilters([FromQuery] MovieSearchFilter movieSearchFilter)
+        {
+            var result = await _businessGetMovies.GetMoviesByFilter(movieSearchFilter);
             if (result != null)
                 return Ok(result);
             return BadRequest();

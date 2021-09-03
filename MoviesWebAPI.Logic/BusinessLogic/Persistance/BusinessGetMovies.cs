@@ -105,8 +105,8 @@ namespace MoviesWebAPI.Logic.Business.Persistance
             var query = await userMoviesRepositoryEF.getMoviesRepository.GetMoviesByUserAsync(userId);
             if (query.Count() == 0)
                 throw new NotFoundException();
-            query = query.Where(x => x.MovieRatings.Select(r => r.User.Id).ToList().Contains(userId));
-            var result = await GetMovieViewModel(query);
+            //query = query.Where(x => x.MovieRatings.Select(r => r.User.Id).ToList().Contains(userId));
+            var result = await GetMovieViewModel(query, userId);
             return result.OrderByDescending(x=>x.AverageRating).ThenBy(x=>x.Title).Skip((5) * 0).Take(5).ToList();
         }
 
@@ -137,17 +137,25 @@ namespace MoviesWebAPI.Logic.Business.Persistance
             return await Task.Run(() => { return valid; }); ;
         }
 
-        private async Task<List<MovieViewModel>> GetMovieViewModel(IEnumerable<MovieDto> movieDtos)
+        private async Task<List<MovieViewModel>> GetMovieViewModel(IEnumerable<MovieDto> movieDtos, int userId = 0)
         {
             return await Task.Run(() =>
             {
+                double CalculateAverage(List<MovieRatingDto> movieRatingDtos)
+                {
+                    double average = 0.0;
+                    if (movieRatingDtos != null && movieRatingDtos.Count() > 0)
+                        average = Math.Round(movieRatingDtos.Select(x => x.Rating).Average(), 1);
+
+                    return average;
+                }
                 return (from movie in movieDtos
                         select new MovieViewModel()
                         {
                             Id = movie.Id,
                             Title = movie.Title,
                             RunningTime = movie.RunningTime > 0 ? (movie.RunningTime / 60) : 0,
-                            AverageRating = movie.MovieRatings != null && movie.MovieRatings.Count() > 0 ? Math.Round(movie.MovieRatings.Select(x => x.Rating).Average(), 1): 0,
+                            AverageRating = userId == 0 ? CalculateAverage(movie.MovieRatings): CalculateAverage(movie.MovieRatings.Where(x => x.User.Id == userId).ToList()),
                             Genres = movie.Genres != null && movie.Genres.Count() > 0 ? string.Join(",", movie.Genres.Select(x => x.Name).ToArray()) : null,
                             YearOfRelease = movie.YearOfRelease
                         }).ToList();

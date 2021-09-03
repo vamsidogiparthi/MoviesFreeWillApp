@@ -110,7 +110,12 @@ namespace MoviesWebAPI.Data.Repository.Persistance
                             {
                                 Id = r.Id,
                                 MovieId = r.MovieId,
-                                Rating = r.RatingId
+                                Rating = r.RatingId,
+                                User = new UserDto
+                                {
+                                    Id = r.User.Id,
+                                    Name = r.User.FirstName + " " + r.User.LastName
+                                }
                             }).ToList()
                         }).ToList();
 
