@@ -30,8 +30,7 @@ namespace MoviesWebAPI.Data.Repository.Persistance
                 {
                     UserId = movieRating.User.Id,
                     MovieId = movieRating.MovieId,
-                    RatingId = movieRating.Rating
-
+                    RatingId = _context.Ratings.Where(x => x.Value == movieRating.Rating).FirstOrDefault().Id
 
                 };
                 await _context.MovieUserRatings.AddAsync(movieUserRating);
@@ -51,7 +50,8 @@ namespace MoviesWebAPI.Data.Repository.Persistance
         {
             var movieRatingObj = _context.MovieUserRatings.Where(x => x.UserId == movieRating.User.Id && x.MovieId == movieRating.MovieId).FirstOrDefault();
             if (movieRatingObj != null)
-                movieRatingObj.RatingId = movieRating.Rating;
+                movieRatingObj.RatingId = _context.Ratings.Where(x => x.Value == movieRating.Rating).FirstOrDefault().Id;
+            _context.MovieUserRatings.Update(movieRatingObj);
         }
     }
 }

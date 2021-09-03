@@ -128,9 +128,25 @@ namespace MoviesWebAPI.Logic.Business.Persistance
             {
                 double CalculateAverage(List<MovieRatingDto> movieRatingDtos)
                 {
+
                     double average = 0.0;
                     if (movieRatingDtos != null && movieRatingDtos.Count() > 0)
-                        average = Math.Round(movieRatingDtos.Select(x => x.Rating).Average(), 1);
+                    {
+                        average = movieRatingDtos.Select(x => x.Rating).Average();
+                        var abso = Math.Abs(average);
+                        var integ = (long)abso;
+                        var decimalpar = abso - integ;
+                        average = integ;
+                        var middistance = (decimalpar - 0.5) < 0 ? -(decimalpar - 0.5) : (decimalpar - 0.5);
+                        var highDistance = (1 - decimalpar);
+                        var min = Math.Min(decimalpar, Math.Min(middistance, highDistance));
+                        if (decimalpar == min)
+                            average = integ + 0.0;
+                        if (middistance == min)
+                            average = integ + 0.5;
+                        if (highDistance == min)
+                            average = integ + 1.0;
+                    }
 
                     return average;
                 }

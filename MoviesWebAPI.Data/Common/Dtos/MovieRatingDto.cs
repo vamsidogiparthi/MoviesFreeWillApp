@@ -22,7 +22,7 @@ namespace MoviesWebAPI.Data.Common.Dtos
                 .ForMember(d => d.Id, opt => opt.MapFrom(s => s.Id))
                 .ForMember(d => d.User, opt => opt.MapFrom(s => s.User))
                  .ForMember(d => d.MovieId, opt => opt.MapFrom(s => s.MovieId))
-                .ForMember(d => d.Rating, opt => opt.MapFrom(s => s.RatingId));
+                .ForMember(d => d.Rating, opt => opt.MapFrom(s => s.Rating.Value));
         }
     }
 }

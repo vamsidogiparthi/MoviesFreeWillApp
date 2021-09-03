@@ -37,9 +37,14 @@ namespace MoviesWebAPI.Data.Repository.Persistance
         {
             return await Task.Run(() =>
             {
-                UserDto user = new UserDto();
+                UserDto user = null;
                 var query = _context.Users.FirstOrDefault(x => x.Id == id);
-                _mapper.Map(query, user);
+                if (query != null)
+                {
+                    user = new UserDto();
+                    _mapper.Map(query, user);
+                }
+
 
                 return user;
             });
