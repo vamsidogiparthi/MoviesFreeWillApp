@@ -90,7 +90,7 @@ namespace MoviesWebAPI.Data.Repository.Persistance
             return await Task.Run(() => { return query; });
         }      
 
-        private async Task<IEnumerable<MovieDto>> GetMovieDtos(IQueryable<Movie> movies)
+        private async Task<IEnumerable<MovieDto>> GetMovieDtos(IQueryable<Movie> movies, int? userId = null)
         {
             return await Task.Run(() =>
             {
@@ -106,17 +106,17 @@ namespace MoviesWebAPI.Data.Repository.Persistance
                                 Id = c.Id,
                                 Name = c.Genre.Name
                             }).ToList(),
-                            MovieRatings = movie.MovieUserRatings.Select(r => new MovieRatingDto
+                            MovieRatings = movie.MovieUserRatings.Where(x => x.MovieId == movie.Id && (userId == null || x.UserId == userId)).Select(r => new MovieRatingDto
                             {
                                 Id = r.Id,
                                 MovieId = r.MovieId,
-                                Rating = r.RatingId,
+                                Rating = r.Rating.Value,
                                 User = new UserDto
                                 {
                                     Id = r.User.Id,
                                     Name = r.User.FirstName + " " + r.User.LastName
                                 }
-                            }).ToList()
+                            }).ToList()                          
                         }).ToList();
 
             });

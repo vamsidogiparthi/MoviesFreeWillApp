@@ -156,7 +156,7 @@ namespace MoviesWebAPI.Logic.Business.Persistance
                             Id = movie.Id,
                             Title = movie.Title,
                             RunningTime = movie.RunningTime > 0 ? (movie.RunningTime / 60) : 0,
-                            AverageRating = userId == 0 ? CalculateAverage(movie.MovieRatings) : CalculateAverage(movie.MovieRatings.Where(x => x.User.Id == userId).ToList()),
+                            AverageRating = userId == 0 ? CalculateAverage(movie.MovieRatings) : movie.MovieRatings.Where(x => x.User.Id == userId).FirstOrDefault().Rating,
                             Genres = movie.Genres != null && movie.Genres.Count() > 0 ? string.Join(",", movie.Genres.Select(x => x.Name).ToArray()) : null,
                             YearOfRelease = movie.YearOfRelease
                         }).ToList();
