@@ -11,7 +11,7 @@ The App is divided into three main layers. All the layers are built as separate 
 ## Service/Controller Layer:
 This project contains two main controllers to fetch Movies by different criteira and Registered users. The controllers are simple and only deals with calling the responsible logic method and send the response back. 
 1. Movies Controller: Contains all the api calls related to fetching movies and adding/updating the movie rating inside the database.
-   1. ** NOTE: /api/movies/getmoviesbyfilters for genres. It accepts list of genres. No partial matches are allow. Full match.
+   1. **NOTE: /api/movies/getmoviesbyfilters for genres. It accepts list of genres. No partial matches are allow. Full match.*
 2. Users Controller: Just have methods to fetch users within the database by id or all together.
 
 ## Logic Layer:
@@ -25,7 +25,7 @@ Schema files are pushed into the repository under common project. Use them creat
 
 ### NOTE: I used the automapper and traditional mapping intentionally to show case different ways to acheive mapping. Also, traditional linq mapping is recommended for nested mapping by automapper as well.
 
-*All the common files are saved in the common project. Such as custom validations, custom exceptions etc
+*All the common files are saved in the common project. Such as custom validations, custom exceptions etc*
 
 ### Middlewares: The app use Custom exception middleware to gather all the exceptions at one place, log (not implemented yet) & send response based on the type of error. 
 
