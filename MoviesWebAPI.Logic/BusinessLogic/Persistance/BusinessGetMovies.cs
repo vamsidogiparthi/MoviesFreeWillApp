@@ -48,8 +48,12 @@ namespace MoviesWebAPI.Logic.Business.Persistance
                         query = query.Where(x => x.YearOfRelease == filter.YearOfRelease);
                     if (filter.Genres != null && filter.Genres.Count() > 0)
                     {
-                        filter.Genres = filter.Genres.ConvertAll(x => x.ToUpper());
-                        query = query.Where(x => x.Genres.Any(t1 => filter.Genres.Contains(t1.Name.ToUpper())));
+                        if (filter.Genres[0] != null)
+                        {
+                            filter.Genres = filter.Genres.ConvertAll(x => x.ToString().ToUpper());
+                            query = query.Where(x => x.Genres.Any(t1 => filter.Genres.Contains(t1.Name.ToUpper())));
+
+                        }
                     }
                     if (query.Count() == 0)
                         throw new NotFoundException("No Movies");
@@ -110,7 +114,7 @@ namespace MoviesWebAPI.Logic.Business.Persistance
         {
             bool valid = false;
 
-            if (string.IsNullOrEmpty(filter.Title) && !filter.YearOfRelease.HasValue && (filter.Genres == null || filter.Genres.Count() == 0))
+            if (string.IsNullOrEmpty(filter.Title) && !filter.YearOfRelease.HasValue && (filter.Genres == null || filter.Genres.Count() == 0 || filter.Genres[0] == null))
             {
                 throw new ValidationException(new List<FluentValidation.Results.ValidationFailure>()
                 {
@@ -126,30 +130,6 @@ namespace MoviesWebAPI.Logic.Business.Persistance
         {
             return await Task.Run(() =>
             {
-                double CalculateAverage(List<MovieRatingDto> movieRatingDtos)
-                {
-
-                    double average = 0.0;
-                    if (movieRatingDtos != null && movieRatingDtos.Count() > 0)
-                    {
-                        average = movieRatingDtos.Select(x => x.Rating).Average();
-                        var abso = Math.Abs(average);
-                        var integ = (long)abso;
-                        var decimalpar = abso - integ;
-                        average = integ;
-                        var middistance = (decimalpar - 0.5) < 0 ? -(decimalpar - 0.5) : (decimalpar - 0.5);
-                        var highDistance = (1 - decimalpar);
-                        var min = Math.Min(decimalpar, Math.Min(middistance, highDistance));
-                        if (decimalpar == min)
-                            average = integ + 0.0;
-                        if (middistance == min)
-                            average = integ + 0.5;
-                        if (highDistance == min)
-                            average = integ + 1.0;
-                    }
-
-                    return average;
-                }
                 return (from movie in movieDtos
                         select new MovieViewModel()
                         {
@@ -162,6 +142,31 @@ namespace MoviesWebAPI.Logic.Business.Persistance
                         }).ToList();
 
             });
+        }
+
+        private double CalculateAverage(List<MovieRatingDto> movieRatingDtos)
+        {
+
+            double average = 0.0;
+            if (movieRatingDtos != null && movieRatingDtos.Count() > 0)
+            {
+                average = movieRatingDtos.Select(x => x.Rating).Average();
+                var abso = Math.Abs(average);
+                var integ = (long)abso;
+                var decimalpar = abso - integ;
+                var middistance = (decimalpar - 0.5) < 0 ? -(decimalpar - 0.5) : (decimalpar - 0.5);
+                var highDistance = (1 - decimalpar);
+                var min = Math.Min(decimalpar, Math.Min(middistance, highDistance));
+                average = integ;                
+                if (decimalpar == min)
+                    average = integ + 0.0;
+                if (middistance == min)
+                    average = integ + 0.5;
+                if (highDistance == min)
+                    average = integ + 1.0;
+            }
+
+            return average;
         }
     }
 }
