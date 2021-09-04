@@ -20,7 +20,7 @@ namespace MoviesWebAPI.Controllers
             _businessGetMovies = businessGetMovies;
         }
 
-
+        // End point to Get all the movies no params
         [HttpGet]
         [Route("getallmovies")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -34,7 +34,7 @@ namespace MoviesWebAPI.Controllers
             return BadRequest();
         }
 
-
+        // End point to Get the movies by paging. Default pageIndex is 0 and pageSize is 5 . Part B
         [HttpGet]
         [Route("getmoviebypaging")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -49,6 +49,7 @@ namespace MoviesWebAPI.Controllers
         }
 
 
+        // End point to Get the movies by User Rated. Default pageIndex is 0 and pageSize is 5 . Part C
         [HttpGet]
         [Route("getmoviesbyuser/{userId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -62,6 +63,8 @@ namespace MoviesWebAPI.Controllers
             return BadRequest();
         }
 
+
+        // End point to Get the movies by filters. Title full or partial match, year integer, Genres list of string full match . Part A
         [HttpGet]
         [Route("getmoviesbyfilters")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -74,6 +77,8 @@ namespace MoviesWebAPI.Controllers
                 return Ok(result);
             return BadRequest();
         }
+
+        // Add or Update User Ratings . Part D
 
         [HttpPost]
         [Route("addorupdate")]

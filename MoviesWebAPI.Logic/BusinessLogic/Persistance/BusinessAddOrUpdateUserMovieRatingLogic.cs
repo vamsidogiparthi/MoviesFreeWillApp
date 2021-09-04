@@ -44,7 +44,7 @@ namespace MoviesWebAPI.Logic.Business.Persistance
                     };
                     if (validationResult.Item2.HasValue)
                         userMoviesRepositoryEF._addOrUpdateUserMovieRating.UpdateMovieRating(movieRatingDto);
-                    else                      
+                    else
                         userMoviesRepositoryEF._addOrUpdateUserMovieRating.AddMovieRating(movieRatingDto);
 
                     var count = await userMoviesRepositoryEF._addOrUpdateUserMovieRating.Complete();
@@ -80,15 +80,19 @@ namespace MoviesWebAPI.Logic.Business.Persistance
                     new FluentValidation.Results.ValidationFailure("InvalidRating", "Rating value needs to be between 1 to 5"),
                 });
             }
+
             var movie = await userMoviesRepositoryEF.getMoviesRepository.GetMovieByIdAsync(movieRating.MovieId);
             if (movie == null)
                 throw new NotFoundException();
+
             var user = await userMoviesRepositoryEF._getUsersRepository.GetUsersByIdAsync(movieRating.UserId);
             if (user == null)
                 throw new NotFoundException();
+
             var movieRatingRec = await userMoviesRepositoryEF.getMoviesRepository.GetMovieUserRatingByMovieAndUserIdAsync(movieRating.UserId, movieRating.MovieId);
             if (movieRatingRec != null)
                 isAlreadyExists = movieRatingRec.Id;
+
             isValid = true;
 
             return await Task.Run(() => { return (isValid, isAlreadyExists); });
