@@ -84,10 +84,9 @@ namespace MoviesWebAPI.Logic.Business.Persistance
             var query = await userMoviesRepositoryEF.getMoviesRepository.GetAllMoviesAsync();
             if (query.Count() == 0)
                 throw new NotFoundException();
-
-            query = query.Skip((pageSize) * pageNumber).Take(pageSize);
+            
             var result = await GetMovieViewModel(query);
-            return result.OrderByDescending(x => x.AverageRating).ThenBy(x => x.Title).ToList();
+            return result.OrderByDescending(x => x.AverageRating).ThenBy(x => x.Title).Skip((pageSize) * pageNumber).Take(pageSize).ToList();
         }
 
         public async Task<MovieViewModel> GetMovieByIdAsync(int id)
